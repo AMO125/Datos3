@@ -1,0 +1,202 @@
+import numpy as np
+from Scripts.secuenciable import Secuenciable
+from secuenciable import Secuenciable
+import Libro as L
+from typing import TypeVar
+
+T = TypeVar('T')
+
+class Secuencia(Secuenciable):
+
+    def __init__(self, *params):
+        if len(params) == 0:  # Constructor por omisión
+            self.__datos = np.empty(30, dtype=L.Libro)
+            self.__nd = 0
+            print("Se creo una secuencia para 20 elementos!\n")
+        elif len(params) == 1:  # Constructor por parámetros
+            try:
+                self.__datos = np.empty(params[0], dtype=L.Libro)
+                self.__nd = 0
+                print(f"Se creo una secuencia para {params[0]} elementos!\n")
+            except ValueError:
+                print("El tamaño del arreglo debe ser positivo!\n")
+
+    def __iter__(self):
+        self.pos = 0
+        return self
+
+    def __next__(self) -> L.Libro:
+        if self.pos < self.nd:
+            a = self.datos[self.pos]
+            self.pos += 1
+            return a
+        else:
+            raise StopIteration
+
+    #Métodos GET
+
+    @property
+    def datos(self):
+        return self.__datos
+
+    @property
+    def nd(self) -> int:
+        return self.__nd
+
+    #Métodos calculadores
+
+    def agregar(self, elemento: T):
+        try:
+            self.__datos[self.__nd]=elemento
+            self.__nd += 1
+        except IndexError:
+            print("No es posible agregar un elemento!\n")
+        pass
+
+
+    def agregar(self, elemento: T, nveces: int):
+        it1 = iter(self)
+        i = 0
+        try:
+            while i<=nveces-1:
+                self.__datos[self.__nd]=next(it1)
+                self.__nd += 1
+                i+=1
+        except StopIteration:
+            print("No es posible agregar un elemento!\n")
+
+    def contiene(self, elemento: T) -> bool:
+        inicio = 0
+        fin = len(self.__datos) - 1
+
+        while inicio <= fin:
+            medio = (inicio + fin) // 2
+
+            if self.__datos[medio] == valor:
+                return True  # Lo encontró
+            elif self.__datos[medio] < valor:
+                inicio = medio + 1
+            else:
+                fin = medio - 1
+
+    def repeticiones(self, elemento: T) -> int:
+        if self.contiene(elemento):
+            it1=iter(self)
+            repeticiones=0
+            try:
+                while True:
+                    elem = next(it1)
+                    if elem == elemento:
+                        ocurrencias += 1
+            except StopIteration:
+                pass
+            return repeticiones
+        else:
+            return 0
+
+    def __encuentra(self, elemento: T) -> int:
+        inicio = 0
+        fin = len(self.__datos) - 1
+
+        while inicio <= fin:
+            medio = (inicio + fin) // 2
+
+            if self.__datos[medio] == valor:
+                return medio  # Lo encontró
+            elif self.__datos[medio] < valor:
+                inicio = medio + 1
+            else:
+                fin = medio - 1
+
+    def eliminar(self, elemento: T):
+        if self.contiene(elemento):
+            while True:
+                pos=__encuentra(self, elemento)
+                if pos==self.__nd:
+                    self.__nd -= 1
+                    continue
+                elif (pos!= self.__nd and type(pos)==int):
+                    self.__datos[self.__nd], self.__datos[i] = self.__datos[i], self.__datos[self.__nd]
+                    continue
+                else:
+                    break
+        else:
+            print("El elemento no se encuentra en la secuencia\n")
+
+    def eliminar(self, elemento: T, nrep: int):
+        if nrep<=self.repeticiones(elemento):
+            it1=iter(self)
+            i=0
+            try:
+                while i<=nrep-1:
+                    pos = __encuentra(self, elemento)
+                    if pos == self.__nd:
+                        self.__nd -= 1
+                        i+=1
+                        continue
+                    elif (pos != self.__nd and type(pos) == int):
+                        self.__datos[self.__nd], self.__datos[i] = self.__datos[i], self.__datos[self.__nd]
+                        i+=1
+                        continue
+                    else:
+                        break
+            except StopIteration:
+                pass
+        else:
+            print(f"El elemento no se encuentre en la secuencia al menos {nrep} veces\n")
+
+    def esta_vacia(self) -> bool:
+        if self.__nd == 0:
+            return True
+
+    def cardinalidad(self) -> int:
+        return self.__nd
+
+    def vaciar(self):
+        self.__nd =0
+
+    def secuencia_unico(self):
+        it1=iter(self)
+        try:
+            while True:
+                elem=next(it1)
+                reps=self.repeticiones(elem)
+                eliminar(elem, reps-1)
+        except StopIteration:
+            pass
+    def __particion(arreglo, inicio, fin, comparador) -> int:
+        pivote = arreglo[inicio]
+        left = inicio + 1
+        right = fin
+        while True:
+            while left <= right and comparador(arreglo[left], pivote) <= 0:
+                left += 1
+            while comparador(arreglo[right], pivote) > 0 and right >= left:
+                right -= 1
+            if right < left:
+                break
+            else:  # Intercambiamos los datos que no cumplieron las condiciones
+                    arreglo[left], arreglo[right] = arreglo[right], arreglo[left]
+                    # Movemos el pivote a la posición correcta
+        arreglo[inicio], arreglo[right] = arreglo[right], arreglo[inicio]
+        return right  # Devolvemos la posición correcta del pivote
+
+    def quick_sort(arreglo, inicio, fin, comparador):
+        if inicio < fin:
+            posicion_part = __particion(arreglo, inicio, fin, comparador)
+
+            quick_sort(arreglo, inicio, posicion_part - 1, comparador)
+            quick_sort(arreglo, posicion_part + 1, fin, comparador)
+            return arreglo
+
+    def ordenar(arreglo, comparador):
+        if len(arreglo)>1:
+            orden=quick_sort(arreglo.copy(), 0, len(arreglo)-1, comparador)
+            for libro in orden:
+                if libro is not None:
+                    print(libro)
+            print()
+        else:
+            return arreglo
+
+
