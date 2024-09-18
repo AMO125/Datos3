@@ -1,0 +1,73 @@
+from Libro import Libro
+from secuenciable import Secuenciable
+from Secuencia import Secuencia
+if __name__ == "__main__":
+    secuencia = Secuencia()
+
+    while True:
+        print("\nMenú del inventario de la biblioteca")
+        print("1. Agregar un libro al inventario (un ejemplar)")
+        print("2. Agregar una cierta cantidad de ejemplares de un libro al inventario.")
+        print("3. Verificar si un libro se encuentra disponible en el inventario.")
+        print("4. Conocer la cantidad de ejemplares de un libro que hay en el inventario")
+        print("5. Eliminar un elemento de la secuencia (todas las veces que aparece).")
+        print("6. Eliminar un elemento de la secuencia una cierta cantidad de veces.")
+        print("7. Verificar si el inventario está vacío.")
+        print("8. Verificar la cantidad de libros en el inventario")
+        print("9. Vaciar el inventario.")
+        print("10. Listar todos los libros existentes en el inventario (sin orden particular.)")
+        print("11. Listar todos los libros existentes en el inventario por orden alfabético de título.")
+        print("12. Listar todos los libros existentes en el inventario por orden alfabético de género y título.")
+        print("13. Leer inventario desde archivo CSV.")
+        print("14. Verificar si dos libros son iguales.")
+        print("14. Imprimir la ficha bibliográfica de un libro.")
+        print("15. Salir.")
+        opcion = input("Elige una opción: ")
+
+        if opcion == "1":
+            pass
+
+        elif opcion == "2":
+            pass
+
+        elif opcion == "3":
+            pass
+
+        elif opcion == "4":
+            pass
+
+        elif opcion == "5":
+            pass
+
+        elif opcion == "6":
+            pass
+
+        elif opcion == "7":
+            pass
+
+        elif opcion == "8":
+            pass
+
+        elif opcion == "9":
+            pass
+
+        elif opcion == "10":
+            pass
+
+        elif opcion == "11":
+            pass
+
+        elif opcion == "12":
+            pass
+
+        elif opcion == "13":
+            pass
+
+        elif opcion == "14":
+            pass
+
+        elif opcion == "15":
+            pass
+
+        else:
+            print("Por favor, escoja una opción válida")
