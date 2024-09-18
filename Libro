@@ -1,0 +1,139 @@
+class Libro:
+    def __init__(self, *params):
+        if len(params) == 0: #Constructor por omisión
+            self.__titulo = "El Retrato de Dorian Gray"
+            self.__autor = "Oscar Wilde"
+            self.__genero = "Ficción gótica"
+            self.__ISBN = 978-6070749087
+            self.__publicacion = 1890
+            self.__editorial = "Debolsillo"
+            self.__edicion = 1
+            self.__pags = 288
+
+        elif len(params)==6: #Constructor por parámeetros
+            self.__titulo = params[0]
+            self.__autor = params[1]
+            self.__genero = params[2]
+            self.__ISBN = params[3] if (len(params[3])==13 and params[3].isnumeric) else None
+            self.__publicacion = params[4]
+            self.__editorial = params[5]
+            self.__edicion = int(params[6]) if int(params[6])>=1 else 1
+            self.__pags = params[7] if params[7]>10 else 10
+
+    #Métodos GET
+
+    @property
+    def titulo(self):
+        return self.__titulo
+
+    @property
+    def autor(self):
+        return self.__autor
+
+    @property
+    def genero(self):
+        return self.__genero
+
+    @property
+    def ISBN(self):
+        return self.__ISBN
+
+    @property
+    def publicacion(self):
+        return self.__publicacion
+
+    @property
+    def editorial(self):
+        return self.__editorial
+
+    @property
+    def edicion(self):
+        return self.__edicion
+
+    @property
+    def pags(self):
+        return self.__pags
+
+    #Métodos SET
+
+    @titulo.setter
+    def titulo(self, titulo):
+        self.__titulo = titulo
+
+    @autor.setter
+    def autor(self, autor):
+        self.__autor = autor
+
+    @genero.setter
+    def genero(self, genero):
+        self.__genero = genero
+
+    @ISBN.setter
+    def ISBN(self, ISBN):
+        self.__ISBN = ISBN
+
+    @publicacion.setter
+    def publicacion(self, publicacion):
+        self.__publicacion = publicacion
+
+    @editorial.setter
+    def editorial(self, editorial):
+        self.__editorial = editorial
+
+    @edicion.setter
+    def edicion(self, edicion):
+        self.__edicion = edicion
+
+    @pags.setter
+    def pags(self, pags):
+        self.__pags = pags
+
+    #Métodos calculadores
+
+    def __str__(self) -> str:
+        return ("Título: {} | Autor: {} | Género: {} | ISBN: {} Año de publicación: {} |"
+                "Editorial: {} | Número de edición: {} | Número de páginas: {}").format(self.__titulo,
+                                                   self.__autor,
+                                                   self.__genero,
+                                                   self.__ISBN,
+                                                   self.__edicion,
+                                                   self.__pags)
+    def __iter__(self):
+        return iter([self.__titulo, self.__autor, self.__genero, self.__ISBN, self.__publicacion, self.__editorial, self.__edicion, self.__pags])
+
+    def __llave(self):
+        return self.__titulo, self.__autor, self.__genero, self.__ISBN, self.__publicacion, self.__editorial, self.__edicion, self.__pags
+
+    def __hash__(self):
+        return hash(self.__llave())
+
+    def __eq__(self, otro):
+        if isinstance(otro, Libro):
+            return self.__llave() == otro.llave()
+
+    def __gt__(self, otro):
+        if isinstance(otro, Libro):
+            return self.__titulo > otro.__titulo
+
+    def __compare_strings(str1: str, str2: str) -> int:
+        if str1 < str2:
+            return -1
+        elif str1 > str2:
+            return 1
+        else:
+            return 0
+
+    def titulo_autor(self, otro) ->int:
+        if isinstance(otro, Libro):
+            if __compare_strings(self.__titulo, otro.__titulo) == 0:
+                return __compare_strings(self.__titulo, otro.titulo)
+            else:
+                return __compare_strings(self.__titulo, otro.autor)
+
+    def genero_titulo(self, otro) -> int:
+        if isinstance(otro, Libro):
+            if __compare_strings(self.__genero, otro.__genero) == 0:
+                return __compare_strings(self.__titulo, otro.__titulo)
+            else:
+                return __compare_strings(self.__genero, otro.__genero)
+
