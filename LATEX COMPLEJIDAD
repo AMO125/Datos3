@@ -1,0 +1,37 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+
+ \title{\line(1,0){250}\\Tabla de complejidad tarea 3\\\line(1,0){250}}
+\author{Equipo R2-Dato}
+\date{26 de septiembre del 2024}
+
+
+
+\begin{document}
+
+\maketitle
+
+\vfill
+
+\begin{table}[h!]
+\begin{center}
+\def\arraystretch{1.5}
+\begin{tabular}{|l|l|}
+\hline
+\multicolumn{1}{|c|}{\large{\textbf{Método}}} & \multicolumn{1}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}\large{Complejidad} \\ (\large{Notación Big O})\end{tabular}}} \\ \hline
+Agregar                               &                                                                                                       \\ \hline
+\large{Agregar (n veces)}                     &                                                                                                       \\ \hline
+\large{Contiene}                             &                                                                                                       \\ \hline
+\large{Repeticiones}                          &                                                                                                       \\ \hline
+\large{Eliminar}                              &                                                                                                       \\ \hline
+\large{Eliminar (n veces)}                    &                                                                                                       \\ \hline
+\large{Está vacía}                            &                                                                                                       \\ \hline
+\large{Cardinalidad}                          &                                                                                                       \\ \hline
+\large{Vaciar}                                &                                                                                                       \\ \hline
+\large{Ordenar}                               &                                                                                                       \\ \hline
+\end{tabular}
+\end{center}
+\end{table}
+\vfill
+
+\end{document}
