@@ -12,7 +12,7 @@ T = TypeVar('T')
 
 class Secuenciable(metaclass=ABCMeta):
     @abstractmethod
-    def agregar(self, elemento: T):
+    def agregar1(self, elemento: T):
         """
         Método que permite agregar un elemento a la Secuencia, siempre
         que sea posible.
@@ -21,7 +21,7 @@ class Secuenciable(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def agregar(self, elemento: T, nveces: int):
+    def agregar2(self, elemento: T, nveces: int):
         """
         Método que permite agregar un elemento a la Secuencia, el número de
         veces indicado, siempreque sea posible.
@@ -31,7 +31,7 @@ class Secuenciable(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def eliminar(self, elemento: T):
+    def eliminar1(self, elemento: T):
         """
         Método que permite eliminar todas las repeticiones del elemento dentro
         de la Secuencia, siempre que esto sea posible.
@@ -40,7 +40,7 @@ class Secuenciable(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def eliminar(self, elemento: T, nrep: int):
+    def eliminar2(self, elemento: T, nrep: int):
         """
         Método que permite eliminar el número de repeticiones del elemento dentro
         de la Secuencia, indicadas por nrep, siempre que esto sea posible.
@@ -107,7 +107,7 @@ class Secuenciable(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def ordenar(self):
+    def ordenar(self, comparador):
         """
         Método que permite devuelve la Secuencia de elementos ordenada.
         Utiliza Quick Sort o Merge Sort y habilita la existencia de dos comparadores
