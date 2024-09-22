@@ -113,10 +113,10 @@ class Secuencia(Secuenciable):
         if self.contiene(elemento):
             while self.contiene(elemento):
                 pos=self.__encuentra(elemento)
-                if pos==self.__nd:
+                if pos==self.__nd-1:
                     self.__nd -= 1
                     continue
-                elif pos!= self.__nd and type(pos)==int:
+                elif pos!= self.__nd-1 and type(pos)==int:
                     self.__datos[self.__nd-1], self.__datos[pos] = self.__datos[pos], self.__datos[self.__nd-1]
                     self.__nd -= 1
                     continue
@@ -132,12 +132,12 @@ class Secuencia(Secuenciable):
             try:
                 while i<=nrep-1:
                     pos = self.__encuentra(elemento)
-                    if pos == self.__nd:
+                    if pos == self.__nd-1:
                         self.__nd -= 1
                         i+=1
                         continue
-                    elif pos != self.__nd and type(pos) == int:
-                        self.__datos[self.__nd], self.__datos[i] = self.__datos[i], self.__datos[self.__nd]
+                    elif pos != self.__nd-1 and type(pos) == int:
+                        self.__datos[self.__nd-1], self.__datos[i] = self.__datos[i], self.__datos[self.__nd-1]
                         i+=1
                         continue
                     else:
