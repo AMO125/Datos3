@@ -10,7 +10,7 @@ def leer_archivo(archivo_csv: str, inventario: Secuencia):
     """
     Lee un archivo CSV que contiene información de libros y los agrega al inventario.
     Permite corregir el ISBN si es inválido.
-
+21
     Args:
         archivo_csv (str): La ruta al archivo CSV.
         inventario (Secuencia): El inventario donde se agregarán los libros.
@@ -69,7 +69,7 @@ def leer_archivo(archivo_csv: str, inventario: Secuencia):
 
 if __name__ == "__main__":
 
-    num_libros = int(input("¿Bienvenido a la biblioteca R2-Dato, ¿Cuántos libros deseas agregar? "))
+    num_libros = int(input("¿Cuántos libros deseas agregar? "))
     """
     if num_libros > 1000000:
         print("El número de libros es demasiado grande. Introduce un número menor a 1000000.")
@@ -85,7 +85,7 @@ if __name__ == "__main__":
         # Mostramos las opciones del menu usando rich
         console = Console()
 
-        table = Table(title="Menú del inventario de la biblioteca R2-Dato")
+        table = Table(title="Menú del inventario de la biblioteca")
         table.add_column("Opción", style="cyan")
         table.add_column("Descripción")
 
@@ -93,8 +93,8 @@ if __name__ == "__main__":
         table.add_row("2", "Agregar una cierta cantidad de ejemplares de un libro al inventario.")
         table.add_row("3", "Verificar si un libro se encuentra disponible en el inventario.")
         table.add_row("4", "Conocer la cantidad de ejemplares de un libro que hay en el inventario.")
-        table.add_row("5", "Eliminar un libro del inventario (todos sus ejemplares).")
-        table.add_row("6", "Eliminar un libro del inventario una cierta cantidad de veces.")
+        table.add_row("5", "Eliminar un elemento de la secuencia (todas las veces que aparece)")
+        table.add_row("6", "Eliminar un elemento de la secuencia una cierta cantidad de veces.")
         table.add_row("7", "Verificar si el inventario está vacío.")
         table.add_row("8", "Verificar la cantidad de libros en el inventario.")
         table.add_row("9", "Vaciar el inventario.")
@@ -106,7 +106,7 @@ if __name__ == "__main__":
         table.add_row("13", "Leer inventario desde archivo CSV.")
         table.add_row("14", "Verificar si dos libros son iguales.")
         table.add_row("15", "Imprimir la ficha bibliográfica de un libro.")
-        table.add_row("16", "Guardar el inventario agregado al programa en un archivo .csv.")
+        table.add_row("16", "Guardar inventario agregado al programa en un archivo .csv.")
         table.add_row("17", "Salir.")
 
         console.print(Panel(table, title="Menú"))
@@ -272,63 +272,90 @@ if __name__ == "__main__":
             # Muestra un mensaje de confirmación
             print(f"Se han agregado {totalejemp} copias de {libro.titulo} a la biblioteca")
 
+
+
+
         elif opcion == "3":
-            # Verificamos si el inventario no está vacía antes de realizar la búsqueda
             if not secuencia.esta_vacia():
                 print("Ingresa los siguientes datos del libro a buscar:\n")
+
                 # Solicitamos al usuario el título del libro que desea buscar.
+
                 titulo = input("Escribe el título del libro: ")
+
                 # Solicitamos el nombre del autor y verifica que sea una cadena de texto válida
+
                 autor = input("Escribe el autor del libro: ")
+
                 while not isinstance(autor, str):
                     print("Por favor escribe el nombre del autor sin números ")
+
                     autor = input("Escribe el autor del libro: ")
+
                 genero = input("Escribe el género del libro: ")
+
                 while not isinstance(genero, str):
                     print("Por favor escribe el género del libro sin números ")
+
                     autor = input("Escribe el género del libro: ")
+
                 ISBN = input("Escribe el ISBN del libro: ")
+
                 while not (len(ISBN) == 13 and ISBN.replace("-", "").isdigit() and (
+
                         ISBN[:3] == "978" or ISBN[:3] == "979")):
                     print("El ISBN es incorrecto, por favor ingresa uno valido (13 dígitos, 978- o 979-)")
+
                     ISBN = input("Escribe el ISBN del libro: ")
+
                 publicacion = input("Escribe el año de publicación del libro: ")
+
                 while True:
+
                     try:
                         publicacion1 = int(publicacion)
+
                         break
+
                     except ValueError:
                         print("Ingresa solo el año de la publicación del libro (sin letras)")
                         publicacion = input("Escribe el año de publicación del libro: ")
+
                 editorial = input("Escribe la editorial del libro: ")
                 edicion = input("Escribe la edición del libro: ")
+
                 while True:
                     try:
                         edicion1 = int(edicion)
+
                         break
+
                     except ValueError:
                         print("Ingresa solo el numero de edición del libro (sin letras)")
                         edicion = input("Escribe número de edición: ")
+
                 pags = input("Escribe el número de páginas del libro: ")
+
                 while True:
                     try:
                         pags1 = int(pags)
+
                         break
+
                     except ValueError:
                         print("Ingresa solo el numero de páginas del libro (sin letras)")
+
                         pags = input("Escribe número de páginas: ")
+
                 # Crea una instancia de la clase 'Libro' con la información proporcionada por el usuario.
-                libro = Libro(titulo, autor, genero, ISBN, publicacion1, editorial, edicion1, pags1)
-                # Verifica si el libro existe en la secuencia (inventario) utilizando el método 'contiene'
-                if secuencia.contiene(libro):
-                    # Si el libro está en el inventario, se muestra un mensaje confirmando su disponibilidad
-                    print("El libro con las características buscadas efectivamente se encuentra en la biblioteca")
+                libro_buscado = Libro(titulo, autor, genero, ISBN, publicacion, editorial, edicion, pags)
+
+                if secuencia.contiene(libro_buscado):
+                    print("El libro se encuentra en el inventario.")
                 else:
-                    # Si el libro no está en el inventario, se muestra un mensaje indicando que no se encuentra
-                    print("El libro que buscas no se encuentra en la biblioteca")
+                    print("El libro no se encuentra en el inventario.")
             else:
-                # Si el inventario está vacío se muestra un mensaje indicandolo
-                print("El inventario está vacío")
+                print("El inventario está vacío.")
 
         # Conocer la cantidad de ejemplares de un libro en el inventario
         elif opcion == "4":
@@ -467,72 +494,30 @@ if __name__ == "__main__":
 
                 # Eliminar un elemento de la secuencia una cierta cantidad de veces.
         elif opcion == "6":
-            # Verifica si el inventario no está vacío.
             if not secuencia.esta_vacia():
-                print("Ingresa los siguientes datos del libro a eliminar:\n")
-                # Solicitamos al usuario el título del libro que desea eliminar
-                titulo = input("Escribe el título del libro: ")
-                # Solicitamos el nombre del autor y validamos que sea una cadena de texto
-                autor = input("Escribe el autor del libro: ")
-                while not isinstance(autor, str):
-                    print("Por favor escribe el nombre del autor sin números ")
-                    autor = input("Escribe el autor del libro: ")
-                # Solicitamos el género del libro y validamos que sea una cadena de texto
-                genero = input("Escribe el género del libro: ")
-                while not isinstance(genero, str):
-                    print("Por favor escribe el género del libro sin números ")
-                    autor = input("Escribe el género del libro: ")
-                # Solicitamos el ISBN validamos que tenga 13 caracteres numeric que empiecen con "978" o "979"
-                ISBN = input("Escribe el ISBN del libro: ")
-                while len(ISBN) != 13 or not ISBN.isnumeric or (str(ISBN[:3]) != "978" and str(ISBN[:3]) != "979"):
-                    print("El ISBN es incorrecto, por favor ingresa uno valido ")
+                titulo = input("Escribe el título del libro que deseas eliminar: ")
+                autor = input("Escribe el autor del libro que deseas eliminar: ")
+                genero = input("Escribe el género del libro que deseas eliminar: ")
+                ISBN = input("Escribe el ISBN del libro que deseas eliminar: ")
+                while not (len(ISBN) == 13 and ISBN.replace("-", "").isdigit() and
+                           (ISBN[:3] == "978" or ISBN[:3] == "979")):
+                    print("El ISBN es incorrecto, por favor ingresa uno valido (13 dígitos, 978- o 979-)")
                     ISBN = input("Escribe el ISBN del libro: ")
-                # Solicitamos el año de publicación y lo validamos como un número entero.
-                publicacion = input("Escribe el año de publicación del libro: ")
-                while True:
-                    try:
-                        publicacion1 = int(publicacion)
-                        break
-                    except ValueError:
-                        print("Ingresa solo el año de la publicación del libro (sin letras)")
-                        publicacion = input("Escribe el año de publicación del libro: ")
-                editorial = input("Escribe la editorial del libro: ")
-                # Solicitamos  el número de edición y lo validamos como un número entero.
-                edicion = input("Escribe la edición del libro: ")
-                while True:
-                    try:
-                        edicion1 = int(edicion)
-                        break
-                    except ValueError:
-                        print("Ingresa solo el numero de edición del libro (sin letras)")
-                        edicion = input("Escribe número de edición: ")
-                # Solicitamos el número de páginas y las validamos como un número entero.
-                pags = input("Escribe el número de páginas del libro: ")
-                while True:
-                    try:
-                        pags1 = int(pags)
-                        break
-                    except ValueError:
-                        print("Ingresa solo el numero de páginas del libro (sin letras)")
-                        pags = input("Escribe número de páginas: ")
-                # Crea un objeto Libro con los datos ingresados.
-                libro = Libro(titulo, autor, genero, ISBN, publicacion1, editorial, edicion1, pags1)
-                # Solicitamos el número de ejemplares que se desean eliminar y los validamos como un entero.
-                totalejemp = input("Ingresa el total de ejemplares que quieres eliminar: ")
-                while True:
-                    try:
-                        totalejemp1 = int(totalejemp)
-                        break
-                    except ValueError:
-                        print("Ingresa un valor entero positivo, por favor")
-                        totalejemp = input("Ingresa el total de ejemplares que quieres eliminar: ")
-                # Llama al método eliminar2 para eliminar el número especificado de ejemplares del libro
-                secuencia.eliminar2(libro, totalejemp1)
-                # Muestra un mensaje indicando cuántos ejemplares del libro han sido eliminados
-                print("El libro {} fue eliminado {} vez/veces del inventario".format(titulo, totalejemp1))
+                publicacion = int(input("Escribe el año de publicación del libro que deseas eliminar: "))
+                editorial = input("Escribe la editorial del libro que deseas eliminar: ")
+                edicion = int(input("Escribe la edición del libro que deseas eliminar: "))
+                pags = int(input("Escribe el número de páginas del libro que deseas eliminar: "))
+
+                libro_eliminar = Libro(titulo, autor, genero, ISBN, publicacion, editorial, edicion, pags)
+
+                if secuencia.contiene(libro_eliminar):
+                    nrep = int(input("¿Cuántas veces deseas eliminar el libro del inventario?: "))
+                    secuencia.eliminar2(libro_eliminar, nrep)
+                    print(f"El libro {libro_eliminar.titulo} fue eliminado {nrep} vez/veces del inventario.")
+                else:
+                    print("El libro no se encuentra en el inventario.")
             else:
-                # Si el inventario está vacío, muestra un mensaje indicándolo
-                print("El inventario está vacío")
+                print("El inventario está vacío.")
 
         # Verificar si el inventario está vacío.
         elif opcion == "7":
@@ -721,7 +706,7 @@ if __name__ == "__main__":
 
         # Salir del programa
         elif opcion == "17":
-            print("Haz decidido salir del programa")
+            print("Has decidido salir del programa")
             print("¡Hasta pronto!")
             exit()
 
