@@ -1,4 +1,4 @@
-#Importamos todas las interfaces y clases necesarias
+# Importamos todas las interfaces y clases necesarias
 from typing import TypeVar
 import numpy as np
 import Libro as L
@@ -6,22 +6,22 @@ from Orden_secuencia import quick_sort1
 from Secuenciable import Secuenciable
 import csv
 
-T = TypeVar('T') #Tipo genérico
+T = TypeVar('T')
 
-class Secuencia(Secuenciable): #Heredamos de la clase abstracta
+class Secuencia(Secuenciable):
 
     def __init__(self, *params):
         if len(params) == 0:  # Constructor por omisión
             self.__datos = np.empty(30, dtype=L.Libro)
             self.__nd = 0
-            print("Se creo una secuencia para 30 elementos!\n")
+            print("Se creo una secuencia para 20 elementos!\n")
         elif len(params) == 1:  # Constructor por parámetros
             try:
                 self.__datos = np.empty(params[0], dtype=L.Libro)
                 self.__nd = 0
-                print(f"Se creó una secuencia para {params[0]} elementos\n")
+                print(f"Se creo una secuencia para {params[0]} elementos!\n")
             except ValueError:
-                print("El tamaño del arreglo debe ser positivo\n")
+                print("El tamaño del arreglo debe ser positivo!\n")
 
     def __iter__(self):
         """
@@ -68,27 +68,22 @@ class Secuencia(Secuenciable): #Heredamos de la clase abstracta
         Método que agrega un elemento a la sucesión.
         Si el arreglo está lleno, crea uno nuevo con el doble de capacidad
         y copia los elementos del arreglo anterior al nuevo.
-
         :param elemento: El elemento a agregar.
         """
-        try:
-            # Intenta agregar el elemento al arreglo actual.
-            self.__datos[self.__nd] = elemento
-            self.__nd += 1
-        except IndexError:
-            # Si el arreglo está lleno, crea uno nuevo con el doble de capacidad.
-            nuevo_datos = np.empty(len(self.__datos) * 2, dtype=L.Libro)
 
+        if self.__nd == len(self.__datos):
+            # Si el arreglo está lleno, crea uno nuevo con el doble de capacidad
+            nuevo_tamano = len(self.__datos) * 2
+            nuevo_datos = np.empty(nuevo_tamano, dtype=L.Libro)
             # Copia los elementos del arreglo anterior al nuevo.
             for i in range(self.__nd):
                 nuevo_datos[i] = self.__datos[i]
-
             # Actualiza la referencia al nuevo arreglo.
             self.__datos = nuevo_datos
 
-            # Agrega el elemento al nuevo arreglo.
-            self.__datos[self.__nd] = elemento
-            self.__nd += 1
+        # Agrega el elemento al arreglo
+        self.__datos[self.__nd] = elemento
+        self.__nd += 1
 
     def agregar2(self, elemento: T, nveces: int):
         """
@@ -97,14 +92,26 @@ class Secuencia(Secuenciable): #Heredamos de la clase abstracta
         :param elemento: El elemento a agregar
         :param nveces: Las veces que se va a agregar el elemento
         """
-        i = 0
-        try:
-            while i <= nveces-1:
-                self.__datos[self.__nd] = elemento
-                self.__nd += 1
-                i += 1
-        except StopIteration:
-            print("No es posible agregar un elemento!\n")
+
+        if nveces <= 0:
+            return
+
+        if self.__nd + nveces > len(self.__datos):
+            # Si no hay suficiente espacio, crea un nuevo arreglo
+            nuevo_tamano = len(self.__datos) * 2
+            while nuevo_tamano - self.__nd < nveces:
+                nuevo_tamano *= 2
+            nuevo_datos = np.empty(nuevo_tamano, dtype=L.Libro)
+            # Copia los elementos del arreglo anterior al nuevo.
+            for i in range(self.__nd):
+                nuevo_datos[i] = self.__datos[i]
+            # Actualiza la referencia al nuevo arreglo.
+            self.__datos = nuevo_datos
+
+        # Agrega los elementos al arreglo
+        for _ in range(nveces):
+            self.__datos[self.__nd] = elemento
+            self.__nd += 1
 
     def contiene(self, valor: T) -> bool:
         """
@@ -112,18 +119,9 @@ class Secuencia(Secuenciable): #Heredamos de la clase abstracta
         :param valor: El elemento a buscar
         :return: True si está contenido, False en caso contrario
         """
-        inicio = 0
-        fin = self.__nd - 1
-
-        while inicio <= fin:
-            medio = (inicio + fin) // 2
-
-            if self.__datos[medio] == valor:
-                return True  # Lo encontró
-            elif self.__datos[medio] < valor:
-                inicio = medio + 1
-            else:
-                fin = medio - 1
+        for elemento in self.__datos[:self.__nd]:
+            if elemento == valor:
+                return True
         return False
 
     def repeticiones(self, elemento: T) -> int:
@@ -132,90 +130,97 @@ class Secuencia(Secuenciable): #Heredamos de la clase abstracta
         :param elemento: El elemento a buscar
         :return: El número de veces que se repite
         """
-        if self.contiene(elemento): #Verificamos que el elemento esté en el arreglo
+        if self.contiene(elemento):
             it1 = iter(self)
             repeticiones = 0
             try:
                 while True:
-                    elem = next(it1) #Recorremos el arreglo realizando las comparaciones.
-                    if elem == elemento: #Lo encontró
+                    elem = next(it1)
+                    if elem == elemento:
                         repeticiones += 1
-            except StopIteration: #No es posible seguir iterando
+            except StopIteration:
                 pass
             return repeticiones
         else:
             return 0
 
-    def __encuentra(self, valor: T) -> None:
+    def __encuentra(self, valor: T) -> int:
         """
-        Método que nos dice la posición que ocupa un elemento en particular dentro de la secuencia.
-        Usa el código del algoritmo de búsqueda binaria para disminuir la complejidad.
+        Método que nos dice la posición que ocupa un elemento en particular dentro de la secuencia
         :param valor: El elemento a decir su posición
-        :return: La posición en la que se encuentra
+        :return: La posición en la que se encuentra, None si no se encuentra
         """
-        inicio = 0
-        fin = self.__nd - 1
+        # Verificar si la secuencia está ordenada (puedes agregar una bandera o método para esto)
+        ordenada = False # Asumiendo que no está ordenada por defecto
 
-        while inicio <= fin:
-            medio = (inicio + fin) // 2
+        if ordenada:
+            # Búsqueda binaria si la secuencia está ordenada
+            inicio = 0
+            fin = self.__nd - 1
 
-            if self.__datos[medio] == valor:  # Lo encontró
-                return medio #Devuelve la posición
-            elif self.__datos[medio] < valor:
-                inicio = medio + 1
-            else:
-                fin = medio - 1
-        return None
+            while inicio <= fin:
+                medio = (inicio + fin) // 2
+
+                if self.__datos[medio] == valor:
+                    return medio  # Lo encontró
+                elif self.__datos[medio] < valor:
+                    inicio = medio + 1
+                else:
+                    fin = medio - 1
+        else:
+            # Búsqueda lineal si la secuencia no está ordenada
+            for i in range(self.__nd):
+                if self.__datos[i] == valor:
+                    return i
+
+        return None # No se encontró el elemento
 
     def eliminar1(self, elemento: T):
         """
-        Método que permite eliminar de la secuencia todas las veces que aparezca un elemento
+        Método que permite eliminar de la secuencia todas las veces que aparezca un elemento.
         :param elemento: El elemento a eliminar
         """
-        if self.contiene(elemento): #Verificamos que el elemento se encuentre en el arreglo
+        if self.contiene(elemento):
             while self.contiene(elemento):
-                pos=self.__encuentra(elemento) #Pos es la posición del elemento buscado en el arreglo.
-                if pos is not None and pos < self.__nd: #Verificamos no haber rebasado a nd
-                    for i in range(pos, self.__nd - 1):
-                        self.__datos[i] = self.__datos[i + 1]
+                pos = self.__encuentra(elemento)
+                if pos is not None and pos < self.__nd:
+                    # Intercambia el elemento con el último elemento
+                    self.__datos[pos], self.__datos[self.__nd - 1] = self.__datos[self.__nd - 1], self.__datos[pos]
+                    # Elimina el último elemento
                     self.__nd -= 1
         else:
             print("El elemento no se encuentra en la secuencia\n")
 
     def eliminar2(self, elemento: T, nrep: int):
-        """
-        Método que permite eliminar un número dado de apariciones de algún elemento
-        :param elemento: El elemento a eliminar
-        :param nrep: El número total de apariciones del elementoque se van a eliminar
-        """
-        if nrep<=self.repeticiones(elemento): #Verificamos que haya al menos nrep repeticiones del elemento
-            it1=iter(self)
-            i=0
-            try:
-                while i<=nrep-1: #Vamos de 0 hasta nrep-1 (es decir, nrep veces)
-                    pos = self.__encuentra(elemento)
-                    if pos == self.__nd-1: #Si es el último
-                        self.__nd -= 1 #Movemos nd, dejando innaccesible al último elemento.
-                        i+=1
-                        continue
-                    elif pos != self.__nd and type(pos) == int: #Si no es el último
-                        self.__datos[self.__nd], self.__datos[i] = self.__datos[i], self.__datos[self.__nd] #Reemplazamos
-                        self.__nd -= 1 #Movemos nd, dejando innaccesible al último elemento.
-                        i+=1
-                        continue
-                    else:
-                        break
-            except StopIteration:
-                pass
+        if self.repeticiones(elemento)==1:
+            self.eliminar1(elemento)
+
+        elif nrep <= self.repeticiones(self, elemento):
+            apariciones_eliminadas = 0
+            while apariciones_eliminadas < nrep and self.__nd > 0:
+                it = iter(self)
+                indice = 0
+                try:
+                    while True:
+                        libro = next(it)
+                        if libro == elemento:
+                            for j in range(indice, self.__nd - 1):
+                                self.__datos[j] = self.__datos[j + 1]
+                            self.__nd -= 1
+                            apariciones_eliminadas += 1
+                            break
+                        indice += 1
+                except StopIteration:
+                    pass
         else:
-            print(f"El elemento no se encuentre en la secuencia al menos {nrep} veces\n")
+            print(f"El elemento no se encuentra en la secuencia al menos {nrep} veces\n")
 
     def esta_vacia(self) -> bool:
         """
         Método que nos permite decir si nuestra secuencia está vacía
         :return: True si la secuencia es vacía, False en otro caso
         """
-        if self.__nd == 0: #Verificamos si la primer posición libre (nd) es 0
+        if self.__nd == 0:
             return True
 
     def cardinalidad(self) -> int:
@@ -229,7 +234,7 @@ class Secuencia(Secuenciable): #Heredamos de la clase abstracta
         """
         Método que vuelve a la sucesión vacía
         """
-        self.__nd = 0 #Dejamos inaccesibles a todos los elementos de la secuencia
+        self.__nd = 0
 
     def secuencia_unico(self):
         """
@@ -241,7 +246,7 @@ class Secuencia(Secuenciable): #Heredamos de la clase abstracta
             while True:
                 elem = next(it1)
                 reps = self.repeticiones(elem)
-                self.eliminar2(elem, reps-1) #Eliminamos el elemento reps-1 veces, dejando sólo 1
+                self.eliminar2(elem, reps-1)
         except StopIteration:
             pass
 
@@ -300,7 +305,7 @@ class Secuencia(Secuenciable): #Heredamos de la clase abstracta
         """
         arreglo = self.__datos.copy()
         if len(arreglo) > 1:
-            orden = quick_sort1(arreglo.copy(), 0, self.__nd - 1, #Aplicamos quicksort a una copia
+            orden = quick_sort1(arreglo.copy(), 0, self.__nd - 1,
                                 Secuencia.comparar_libros_titulo)
             for libro in orden:
                 if libro is not None:
@@ -317,7 +322,7 @@ class Secuencia(Secuenciable): #Heredamos de la clase abstracta
         """
         arreglo = self.__datos.copy()
         if len(arreglo) > 1:
-            orden = quick_sort1(arreglo.copy(), 0, self.__nd - 1, comparador) #Aplica quicksort con comparador a una copia
+            orden = quick_sort1(arreglo.copy(), 0, self.__nd - 1, comparador)
             for libro in orden:
                 if libro is not None:
                     print(libro)
