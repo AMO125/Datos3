@@ -192,10 +192,10 @@ class Secuencia(Secuenciable):
             print("El elemento no se encuentra en la secuencia\n")
 
     def eliminar2(self, elemento: T, nrep: int):
-        if self.repeticiones(elemento)==1:
+        if nrep==self.repeticiones(self, elemento):
             self.eliminar1(elemento)
 
-        elif nrep <= self.repeticiones(self, elemento):
+        elif nrep < self.repeticiones(self, elemento):
             apariciones_eliminadas = 0
             while apariciones_eliminadas < nrep and self.__nd > 0:
                 it = iter(self)
