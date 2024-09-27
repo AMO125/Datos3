@@ -19,16 +19,16 @@
 \begin{tabular}{|l|l|}
 \hline
 \multicolumn{1}{|c|}{\large{\textbf{Método}}} & \multicolumn{1}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}\large{Complejidad} \\ (\large{Notación Big O})\end{tabular}}} \\ \hline
-Agregar                               &                                                                                                       \\ \hline
-\large{Agregar (n veces)}                     &                                                                                                       \\ \hline
-\large{Contiene}                             &                                                                                                       \\ \hline
-\large{Repeticiones}                          &                                                                                                       \\ \hline
-\large{Eliminar}                              &                                                                                                       \\ \hline
-\large{Eliminar (n veces)}                    &                                                                                                       \\ \hline
-\large{Está vacía}                            &                                                                                                       \\ \hline
-\large{Cardinalidad}                          &                                                                                                       \\ \hline
-\large{Vaciar}                                &                                                                                                       \\ \hline
-\large{Ordenar}                               &                                                                                                       \\ \hline
+Agregar    &  $O(1)$ No está sujeto al tamaño del arreglo.                                                                                     \\ \hline
+\large{Agregar (k veces)}          &   $ O(1) $     Sujeto sólo a la cantidad de veces que se agrega.                                                                                               \\ \hline
+\large{Contiene}    &         $O(log n )$ Realiza una búsqueda binaria                                                                                               \\ \hline
+\large{Repeticiones}                          &           $ O(n logn)$  Realiza búsquedas binarias un máx de n veces                                                                                           \\ \hline
+\large{Eliminar}                              &            $O(nlog n)$ Realiza búsquedas binarias un máx de n veces                                                                                          \\ \hline
+\large{Eliminar (k veces)}                    &             $O(1)  $ Sujeto sólo a la cantidad de veces que se elimina.                                                                                                        \\ \hline
+\large{Está vacía}                          &           $ O(1) $   Sólo compara la variable nd                                                                                         \\ \hline
+\large{Cardinalidad}                    &             $O(1) $  Devuelve la variable nd                                                                                         \\ \hline
+\large{Vaciar}                             &            $ O(1) $    Asigna a la variable nd el valor 0                                                                                      \\ \hline
+\large{Ordenar}                               &            $O(n logn)$ Utiliza quick sort                                                                                           \\ \hline
 \end{tabular}
 \end{center}
 \end{table}
